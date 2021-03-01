@@ -7,7 +7,8 @@ import ru.netology.domain.MovieItem;
 import static org.junit.jupiter.api.Assertions.*;
 
 class PosterManagerTest {
-    private PosterManager manager = new PosterManager();
+    PosterManager manager;
+    PosterManager managerCustom;
     private MovieItem movie1 = new MovieItem(1, "Name1", "Url1", "Genre1");
     private MovieItem movie2 = new MovieItem(2, "Name2", "Url2", "Genre2");
     private MovieItem movie3 = new MovieItem(3, "Name3", "Url3", "Genre3");
@@ -23,6 +24,8 @@ class PosterManagerTest {
 
     @BeforeEach
     public void setUp() {
+        manager = new PosterManager();
+        managerCustom = new PosterManager(5);
         manager.add(movie1);
         manager.add(movie2);
         manager.add(movie3);
@@ -32,43 +35,41 @@ class PosterManagerTest {
         manager.add(movie7);
         manager.add(movie8);
         manager.add(movie9);
+        managerCustom.add(movie1);
+        managerCustom.add(movie2);
+        managerCustom.add(movie3);
+        managerCustom.add(movie4);
+        managerCustom.add(movie5);
     }
 
 
     @Test
-    public void shouldCheckOfTheLastFilms() {
-        //В массиве 10 фильмов
+    public void shouldGetTen() {
         manager.add(movie10);
-        MovieItem[] actual = manager.getAll(10);
-        int expected = 10;
-        assertEquals(expected, actual.length);
+        MovieItem[] actual = manager.getAll();
+        MovieItem[] expected = new MovieItem[]{movie10, movie9, movie8, movie7, movie6, movie5, movie4, movie3, movie2, movie1};
+        assertArrayEquals(expected, actual);
     }
-
     @Test
-    public void shouldListMovieOverLimit() {
-        //В массиве 11 фильмов
+    public void shouldGetEleven() {
         manager.add(movie10);
         manager.add(movie11);
-        MovieItem[] actual = manager.getAll(9);
-        int expected = 10;
-        assertEquals(expected, actual.length);
+        MovieItem[] actual = manager.getAll();
+        MovieItem[] expected = new MovieItem[]{movie11, movie10, movie9, movie8, movie7, movie6, movie5, movie4, movie3, movie2};
+        assertArrayEquals(expected, actual);
     }
     @Test
-    public void shouldListMovieLoverLimit() {
-        //В массиве 9 фильмов
-        MovieItem[] actual = manager.getAll(10);
-        int expected = 9;
-        assertEquals(expected, actual.length);
+    public void shouldGetNinth() {
+        MovieItem[] actual = manager.getAll();
+        MovieItem[] expected = new MovieItem[]{movie9, movie8, movie7, movie6, movie5, movie4, movie3, movie2, movie1};
+        assertArrayEquals(expected, actual);
     }
+    @Test
+    public void shouldGetCustomInSix() {
+        managerCustom.add(movie6);
+        MovieItem[] actual = managerCustom.getAll();
+        MovieItem[] expected = new MovieItem[]{movie6, movie5, movie4, movie3, movie2};
+        assertArrayEquals(expected, actual);
+    }
+
 }
-
-//    @Test
-//    public void shouldRemoveIfExists() {
-//        int idToRemove = 1;
- //       manager.removeById(idToRemove);
-
-//        PurchaseItem[] actual = manager.getAll();
-//        PurchaseItem[] expected = new PurchaseItem[]{third, second};
-
-//    assertEquals(expected, actual);
-//        assertArrayEquals(expected, actual);
